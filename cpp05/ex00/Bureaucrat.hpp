@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 10:36:08 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/16 15:06:09 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:28:09 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 class Bureaucrat
 {
     private:
-        std::string const _name;
-        size_t      _grade;
+        std::string const   _name;
+        size_t              _grade;
     public:
         //Othodox canonical form
         Bureaucrat();
