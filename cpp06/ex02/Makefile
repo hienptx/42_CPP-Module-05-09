@@ -1,4 +1,4 @@
-NAME = Serializer
+NAME = Base
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
@@ -7,10 +7,7 @@ SRCS_PATH = ./srcs
 OBJS_PATH = ./obj
 
 SRCS =	main.cpp \
-		Base.cpp \
-		A.cpp \
-		B.cpp \
-		C.cpp
+		Base.cpp 
 OBJS = $(addprefix $(OBJS_PATH)/, $(SRCS:.cpp=.o))
 
 PURPLE := \033[95m
