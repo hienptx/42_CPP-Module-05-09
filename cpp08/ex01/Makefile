@@ -1,4 +1,4 @@
-NAME = template
+NAME = span
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 SRCS_PATH = ./srcs
 OBJS_PATH = ./obj
 
-SRCS =	main.cpp
+SRCS =	main.cpp Span.cpp
 
 OBJS = $(addprefix $(OBJS_PATH)/, $(SRCS:.cpp=.o))
 
