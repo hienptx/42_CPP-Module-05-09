@@ -1,4 +1,4 @@
-NAME = template
+NAME = mutantstack
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17

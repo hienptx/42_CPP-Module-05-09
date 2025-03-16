@@ -28,7 +28,15 @@
 		- Pass a function as a parameter
 	ex02:
 
-## Module 08: 
+## Module 08: Template, Iterator
+	ex00: Easy find
+    	- Return a pointer to the value to find in a vector of integers
+	ex01: Span
+    	- Create span of integers
+    	- Add number to the array
+    	- Find shortest and longest span of the integer vector
+	ex02: MutantStack
+    	- Create iterator functionality for std::stack
 ## Module 09: 
 
 ## Source links:
