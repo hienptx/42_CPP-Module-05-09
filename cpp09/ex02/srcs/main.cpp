@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/16 18:39:21 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/16 18:29:05 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int main()
     mstack.push(3);
     mstack.push(5);
     mstack.push(737);
+    //[...]
     mstack.push(0);
     
     MutantStack<int>::iterator it = mstack.begin();

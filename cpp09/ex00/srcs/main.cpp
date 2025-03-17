@@ -6,40 +6,24 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/16 18:39:21 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/17 09:16:55 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include "../includes/MutantStack.hpp"
+#include "../includes/BitcoinExchange.hpp"
+#include <fstream>
 
-int main()
+int main(int ac, char *av[])
 {
-    MutantStack<int>
-    mstack;
-    mstack.push(5);
-    mstack.push(17);
+    std::string line;
     
-    std::cout << "Last pushed value top(): " << mstack.top() << std::endl;
-    mstack.pop();
-    std::cout << "Size of stack after pop(): " << mstack.size() << std::endl;
-    
-    mstack.push(3);
-    mstack.push(5);
-    mstack.push(737);
-    mstack.push(0);
-    
-    MutantStack<int>::iterator it = mstack.begin();
-    MutantStack<int>::iterator ite = mstack.end();
-    ++it;
-    --it;
-    std::cout << "Values in stack after incre. and decre. iterator:\n";
-    while (it != ite)
-    {
-        std::cout << *it << std::endl;
-        ++it;
-    }
-    std::stack<int> s(mstack);
-    
+    if (ac != 2)
+        return std::cerr << "Error: Invalid argument.\n./btc [input.txt]\n", 0;
+    std::ifstream input(av[1]);
+    if (!input)
+        return std::cerr << "Error: could not open file\n", 1;
+    while (std::getline(input, line))
+        std::cout << line << std::endl;
+    input.close();
     return 0;
 }
