@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 10:35:55 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/16 21:02:21 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/17 15:40:48 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@ int main()
         std::cout << RED << "Exception: " << e.what() << RESET << std::endl;
     }
 
+    std::cout << YELLOW << EmployeeA << RESET << std::endl;
     for(int i = 0; i < 6; i++)
     {
-        EmployeeA.decrementGrade();   
+        EmployeeA.decrementGrade();
     }
-    std::cout << YELLOW << EmployeeA << RESET << std::endl;
-    std::cout << YELLOW << ManagerA << RESET << std::endl;
 
     std::cout << PURPLE << "\n===== Form Creation =====\n" << RESET;
     Form DefaulForm;
@@ -64,9 +63,6 @@ int main()
 
     Form formB("Form B", false, 60, 100);
     std::cout << BLUE << formB << RESET << std::endl;
-
-    Form formC("Form C", true, 60, 100);
-    std::cout << BLUE << formC << RESET << std::endl;
 
     std::cout << PURPLE << "\n===== Signing Forms =====\n" << RESET;
     ManagerA.signForm(&formB);

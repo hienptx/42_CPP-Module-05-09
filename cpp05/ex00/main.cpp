@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 10:35:55 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/16 16:12:53 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/17 15:32:13 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int main()
         std::cout << ManagerA << std::endl;
     
         Bureaucrat ManagerB("Manager B", 0);
-        std::cout << ManagerB << std::endl;
+        std::cout << ManagerB;
     
         Bureaucrat EmployeeA("Employee A", 145);
         std::cout << EmployeeA << std::endl;
     
         Bureaucrat EmployeeB("Employee B", 155);
-        std::cout << EmployeeB << std::endl;
+        std::cout << EmployeeB;
 
         ManagerA.incrementGrade();
         std::cout << ManagerA << std::endl;
@@ -39,7 +39,7 @@ int main()
             EmployeeA.decrementGrade();   
         }
             
-        std::cout << EmployeeA << std::endl;
         std::cout << ManagerA << std::endl;
+        std::cout << EmployeeA << std::endl;
     return (0);
 }
