@@ -6,12 +6,12 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:22:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/24 20:09:13 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/19 15:10:17 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERIALIZER_HPP
-#define SERALIZER_HPP
+#define SERIALIZER_HPP
 
 /*
 reinterpret_cast is a type of casting in C++ that is used for low-level pointer conversions. It allows:
@@ -26,7 +26,7 @@ Casting between unrelated pointer types
 
 struct Data
 {
-    int num = 9;
+    int num[3] = {9, 2, 0};
     char c = 'A';
     std::string s = "Hello world";
 };

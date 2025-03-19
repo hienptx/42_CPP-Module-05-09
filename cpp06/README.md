@@ -22,7 +22,7 @@
 		- Converting enum values to integers (and vice versa).
 		- Implicit type conversions done manually.
 	🔸 Restrictions:
-		- Does NOT check validity at runtime → Unsafe for downcasting (derived to base).
+		- Does NOT check validity at runtime → Unsafe for downcasting (base to derived).
 		- Cannot be used with polymorphic types (i.e., no virtual functions involved).
 
 # ex01: Serialization - reinterpret_cast<>()

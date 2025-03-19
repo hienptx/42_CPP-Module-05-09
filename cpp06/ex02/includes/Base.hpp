@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 20:21:48 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/25 21:22:30 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/19 16:21:24 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <exception>
-#include "../includes/Serializer.hpp"
+// #include "../includes/Serializer.hpp"
 
-class Serializer;
+// class Serializer;
 
 class Base
 {
@@ -30,4 +30,5 @@ class Base
 Base* generate(void);
 void identify(Base* p);
 void identify(Base& p);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 20:21:24 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/25 21:28:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/19 17:51:48 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Base::~Base(){
 Base *generate(void) {
     std::srand(std::time(0));
     int random = rand() % 3;
-    
+
     switch (random)
     {
         case 0:
@@ -30,39 +30,39 @@ Base *generate(void) {
             return new B();
         case 2:
             return new C();
+        default:
+            return nullptr;
     }
-    return nullptr;   
 }
 
-void identify(Base* p){
+void identify(Base* p) {
     if(dynamic_cast<A*>(p))
         std::cout << "A" << std::endl;
-    if(dynamic_cast<B*>(p))
+    else if(dynamic_cast<B*>(p))
         std::cout << "B" << std::endl;
-    if(dynamic_cast<C*>(p))
+    else if(dynamic_cast<C*>(p))
         std::cout << "C" << std::endl;
+    else
+        std::cout << "Unknown type" << std::endl;
     }
-    
+
 void identify(Base& p) {
     try {
-        dynamic_cast<A&>(p);
+        (void) dynamic_cast<A&>(p);
         std::cout << "A" << std::endl;
     }
-    catch(const std::exception& e){
-        std::cerr << e.what() << '\n';
+    catch(const std::bad_cast& e){
     }
     try {
-        dynamic_cast<B&>(p);
+        (void) dynamic_cast<B&>(p);
         std::cout << "B" << std::endl;
     }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+    catch(const std::bad_cast& e) {
     }
     try {
-        dynamic_cast<C&>(p);
+        (void) dynamic_cast<C&>(p);
         std::cout << "C" << std::endl;
     }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+    catch(const std::bad_cast& e) {
     }
 }

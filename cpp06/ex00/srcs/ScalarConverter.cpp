@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:14:25 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/24 18:20:26 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/17 16:11:12 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void convertMessage(std::string const& input) {
 		
         std::cout << "char: ";
         if (num >= 32 && num <= 126)
-		std::cout << static_cast<char>(num) << std::endl;
+		std::cout << "'" << static_cast<char>(num) << "'" << std::endl;
         else
             std::cout << "non displayable" << std::endl;
 		std::cout << "int: " << num << std::endl;
@@ -87,7 +87,6 @@ int isPseudo(std::string const &input) {
 }
 
 void ScalarConverter::convert(std::string const input) {
-	std::cout << input << std::endl;
 	switch (matched_case(input))
 	{
 		case 1:
