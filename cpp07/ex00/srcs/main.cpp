@@ -6,19 +6,22 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/01 17:07:28 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/20 12:25:53 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Whatever.hpp"
 #include <iostream>
 
-int
-main( void )
+#define PURPLE "\33[95m"
+#define RESET "\033[0m"
+
+int main( void )
 {
     int a=2;
     int b=3;
     
+    std::cout << PURPLE << "====TEST int TYPE====\n" << RESET;
     std::cout << "Before swap: ";
     std::cout << "a = " << a << ", b = " << b  << std::endl;
     ::Swap(a,b);
@@ -27,6 +30,7 @@ main( void )
     std::cout << "min( a, b ) = " << ::Min(a,b) << std::endl;
     std::cout << "max( a, b ) = " << ::Max(a,b) << std::endl;
     
+    std::cout << PURPLE << "====TEST string TYPE====\n" << RESET;
     std::string c ="chaine1";
     std::string d ="chaine2";
     
