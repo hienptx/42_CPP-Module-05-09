@@ -23,10 +23,12 @@
 		- dynamic_cast<class*>(obj) / dynamic_cast<class&>(obj)
 
 ## Module 07: Template
-	ex00: Function template
-	ex01: Function template with a function pointer parameter
-		- Pass a function as a parameter
-	ex02:
+	ex00: template
+		- implement template functions: swap(), min(), max()
+	ex01: iter
+		- implement a template function that can iterate any type of data array
+	ex02: array
+		- create a template class Array
 
 ## Module 08: Template, Iterator
 	ex00: Easy find

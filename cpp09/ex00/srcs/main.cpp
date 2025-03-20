@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/19 18:55:02 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/20 17:49:34 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,18 @@ Error: bad input => 2001-42-42
 Error: too large a number.
 */
 
+void process_input(std::ifstream &input)
+{
+    std::string line;
+    std::regex date("^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$");
+
+    while(std::getline(input, line))
+    {
+
+    }
+    
+}
+
 int main(int ac, char *av[])
 {
     std::string line;
@@ -36,8 +48,9 @@ int main(int ac, char *av[])
         std::ifstream input(av[1]);
     if (!input)
         return std::cerr << "Error: could not open file\n", 1;
-    while (std::getline(input, line))
-        std::cout << line << std::endl;
+    // while (std::getline(input, line))
+    //     std::cout << line << std::endl;
+    process_input(input);
     // open data.csv
     std::ifstream data("data.csv");
     if (!data)
