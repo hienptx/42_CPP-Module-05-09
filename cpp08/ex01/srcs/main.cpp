@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/10 17:42:20 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/21 12:05:46 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 #include <time.h>
 #include <cstdlib>
 
+#define PURPLE "\033[95m"
+#define RESET "\033[0m"
+#define MAX 100
+
 int main(void)
 {
+    std::cout << PURPLE << "====Test Span of 5 numbers\n" << RESET;
     Span sp = Span(5);
-
     try
     {
         sp.addNumber(6);
@@ -33,19 +37,21 @@ int main(void)
     {
         std::cerr << e.what();
     }
-    std::cout << sp.getSpanSize() << std::endl;
-    std::cout << sp.shortestSpan() << std::endl;
-    std::cout << sp.longestSpan() << std::endl;
+    std::cout << "Span size: " << sp.getSpanSize() << std::endl;
+    std::cout << "Shortest span: " << sp.shortestSpan() << std::endl;
+    std::cout << "Longest span: " << sp.longestSpan() << std::endl;
     
+    std::cout << PURPLE << "====Test Span of MAX numbers\n" << RESET;
     std::vector<int> varr;
     std::srand(std::time(NULL));
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < MAX; i++)
     {
-        varr.push_back(std::rand() % 10000 + 1);
+        varr.push_back(std::rand() % 100000 + 1);
     }
-    Span bigspan(900);
+    std::cout << "Finished generated 20000 numbers" << std::endl;
+    Span bigspan(MAX);
     bigspan.addMoreNumbers(varr);
-    std::cout << bigspan.getSpanSize() << std::endl;
-    std::cout << bigspan.shortestSpan() << std::endl;
-    std::cout << bigspan.longestSpan() << std::endl;
+    std::cout << "Span size: " << bigspan.getSpanSize() << std::endl;
+    std::cout << "Shortest span: " << bigspan.shortestSpan() << std::endl;
+    std::cout << "Longest span: " << bigspan.longestSpan() << std::endl;
 }

@@ -3,13 +3,17 @@
 Span::Span(unsigned int n): N(n)
 {}
 
-Span::Span(Span const &copy): N(copy.N)
+// Because Vector has its own copy constructor, in this implementation we dont need to copy each member of the array
+Span::Span(Span const &copy): N(copy.N), span(copy.span)
 {}
 
 Span &Span::operator=(Span const &copy)
 {
 	if (this != &copy)
+	{
 		N = copy.N;
+		span = copy.span;
+	}
 	return (*this);
 }
 

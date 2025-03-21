@@ -4,6 +4,15 @@ As programmers, we only have to write the algorithm once: the compiler takes car
 generating the code for each data type, reducing the need to write duplicate code.
 Topics: Templated containers (vector) , iterators, algorithm
 
+# ex00: Easy find
+    - Return a pointer to the value to find in a vector of integers
+# ex01: Span
+    - Create span of integers
+    - Add number to the array
+    - Find shortest and longest span of the integer vector
+# ex02: MutantStack
+    - Create iterator functionality for std::stack
+
 # C++ STL Containers: Vector vs. Deque vs. Stack vs. List
 
 This guide provides a quick comparison of four common C++ Standard Template Library (STL) containers: `std::vector`, `std::deque`, `std::stack`, and `std::list`.
@@ -71,15 +80,5 @@ int main() {
 
     return 0;
 }
-
-# ex00: Easy find
-    - Return a pointer to the value to find in a vector of integers
-# ex01: Span
-    - Create span of integers
-    - Add number to the array
-    - Find shortest and longest span of the integer vector
-# ex02: MutantStack
-    - Create iterator functionality for std::stack
-
 
 [Source](https://internalpointers.com/post/writing-custom-iterators-modern-cpp)

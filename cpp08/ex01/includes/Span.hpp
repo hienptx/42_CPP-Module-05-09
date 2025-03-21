@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:36:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/10 17:42:42 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/21 11:47:46 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 class Span
 {
 	private:
-		unsigned int	N; // Number if integers
+		unsigned int	N; // Number of integers
 		std::vector<int> span;
 
 	public:

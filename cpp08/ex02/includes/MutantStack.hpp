@@ -77,8 +77,6 @@ class MutantStack: public std::stack<T>
         using std::stack<T>::c;
         using iterator = typename std::deque<T>::iterator;
         using const_iterator = typename std::deque<T>::const_iterator;
-        // iterator begin() {return iterator(this->c.begin());}
-        // iterator end() {return iterator(this->c.end());}
         iterator begin();
         iterator end();
 };
