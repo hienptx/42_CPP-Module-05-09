@@ -6,12 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/20 17:49:34 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/26 18:22:31 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/BitcoinExchange.hpp"
-#include <fstream>
 
 /*
 $> ./btc input.txt
@@ -26,37 +25,23 @@ Error: bad input => 2001-42-42
 Error: too large a number.
 */
 
-void process_input(std::ifstream &input)
-{
-    std::string line;
-    std::regex date("^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$");
-
-    while(std::getline(input, line))
-    {
-
-    }
-    
-}
-
 int main(int ac, char *av[])
 {
-    std::string line;
-    
+    BitcoinExchange btc;
+
     if (ac != 2)
         return std::cerr << "Error: Invalid argument.\n./btc [input.txt]\n", 0;
-    // open input.txt
-        std::ifstream input(av[1]);
+
+    std::ifstream input(av[1]);
     if (!input)
         return std::cerr << "Error: could not open file\n", 1;
-    // while (std::getline(input, line))
-    //     std::cout << line << std::endl;
-    process_input(input);
-    // open data.csv
+    if (!btc.parse_input(input))
+        return input.close(), 0;
     std::ifstream data("data.csv");
     if (!data)
         return std::cerr << "Error: could not open file\n", 1;
-    // while (std::getline(data, line))
-    //     std::cout << line << std::endl;
+    btc.process_data(data);
+    btc.print_output(btc);
     input.close();
     data.close();
     return 0;

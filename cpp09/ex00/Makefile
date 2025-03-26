@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 SRCS_PATH = ./srcs
 OBJS_PATH = ./obj
 
-SRCS =	main.cpp
+SRCS =	main.cpp BitcoinExchange.cpp
 
 OBJS = $(addprefix $(OBJS_PATH)/, $(SRCS:.cpp=.o))
 

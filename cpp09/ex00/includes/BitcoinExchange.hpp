@@ -6,56 +6,34 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 08:35:57 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/20 17:50:38 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/26 18:22:51 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <deque>
-#include <regex>
+#ifndef BITCOINEXCHANGE_HPP
+#define BITCOINEXCHANGE_HPP
 
-template <class T>
+#include <iostream>
+#include <vector>
+#include <utility>
+#include <regex>
+#include <fstream>
+#include <string>
+
 class BitcoinExchange
 {
 	private:
-		size_t		_n;
-		// std::deque _date;
-		// std::deque _valuePerBtc;
-		// std::deque _totalValue;
-	public:	
+		std::vector<std::pair <std::string, double>> _input;
+		std::vector<std::pair <std::string, double>> _data;
+		
+	public:
 		BitcoinExchange();
-		BitcoinExchange(const BitcoinExchange &other);
-		BitcoinExchange &operator=(const BitcoinExchange &other);
 		~BitcoinExchange();
 
-		void setDate(std::string date);
-		// void setValuePerBtc(int valuePerBtc);
-		// void setTotalValue(double totalValue);
+		int parse_input(std::ifstream &input);
+		void process_data(std::ifstream &data);
+		void print_output(BitcoinExchange& btc);
+		double calculate_btc(std::string date, double value);
 };
 
-BitcoinExchange::BitcoinExchange(size_t n): n {}
-
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
-{
-	_date = other._date;
-	_valuePerBtc = other._valuePerBtc;
-	_totalValue = other._totalValue;
-}
-
-BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
-{
-	if (this != &other)
-	{
-		_date = other._date;
-		_valuePerBtc = other._valuePerBtc;
-		_totalValue = other._totalValue;
-	}
-	return(*this);
-}
-
-BitcoinExchange::~BitcoinExchange() {}
-
-BitcoinExchange::setDate(std::string date)
-{
-	
-}
+#endif
