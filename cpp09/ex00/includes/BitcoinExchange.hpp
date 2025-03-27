@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 08:35:57 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/26 18:22:51 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/27 17:00:44 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@
 #include <regex>
 #include <fstream>
 #include <string>
+#include <map>
+#include <sstream>
+#include <iomanip>
 
 class BitcoinExchange
 {
 	private:
 		std::vector<std::pair <std::string, double>> _input;
-		std::vector<std::pair <std::string, double>> _data;
+		std::multimap<std::string, double> _data;
 		
 	public:
 		BitcoinExchange();

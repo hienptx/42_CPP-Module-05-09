@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:39:02 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/26 18:25:48 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/27 17:29:42 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 	std::string		key;
 	double			value;
 	bool			first = true;
-    std::regex 		first_line(R"(^data\s*\|\s*value$)");
+	std::regex 		first_line(R"(^data\s*\|\s*value$)");
 	
-    while(std::getline(input, line))
+	while(std::getline(input, line))
 	{
 		if (first)
 		{
@@ -52,18 +52,18 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 		else
 		{
 			is_pipe = line.find('|');
-			if (is_pipe != std::string::npos)
+			if (is_pipe != std::string::npos && std::count(line.begin(), line.end(), '|') == 1)
 			{
 				key = line.substr(0, is_pipe);
 				value = std::stod(line.substr(is_pipe + 1));
 				_input.emplace_back(key, value);
 			}
 			else
-				_input.emplace_back(line, 0);
+			{
+				_input.emplace_back("Wrong format", 0);
+			}
 		}
 	}
-	// for (const auto& n : _input)
-	// 	std::cout << n.first << "=> " << n.second << std::endl;
 	return 1;
 }
 
@@ -86,27 +86,47 @@ void BitcoinExchange::process_data(std::ifstream& data)
 			{
 				key = line.substr(0, is_comma);
 				value = std::stod(line.substr(is_comma + 1));
-				_data.emplace_back(key, value);
+				_data.emplace(key, value);
 			}
 			else
 				;
 		}
 	}
-	for (const auto& b : _data)
-		std::cout << b.first << "=> " << b.second << std::endl;
+}
+
+bool is_valid_date(const std::string& date)
+{
+	int year, month, day;
+	char dash1, dash2;
+
+	// Parse the date string in the format YYYY-MM-DD
+	std::istringstream date_stream(date);
+	if (!(date_stream >> year >> dash1 >> month >> dash2 >> day) || dash1 != '-' || dash2 != '-')
+	{
+		return false; // Invalid format
+	}
+	// Check if the year, month, and day are in valid ranges
+	if (month < 1 || month > 12) return false;
+	// Days in each month (non-leap year)
+	int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	// Adjust for leap year
+	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+		days_in_month[1] = 29;
+	if (day < 1 || day > days_in_month[month - 1]) return false;
+
+return true;
 }
 
 int check_input(std::string date, double value)
 {
-	std::regex	date_pattern(R"(^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$)");
-
-	if (std::regex::match(date, date_pattern))
+	if (!is_valid_date(date))
 		return 1;
-	if (value < 0)
+	else if (value < 0)
 		return 2;
-	if (value > 1000)
+	else if (value > 1000)
 		return 3;
-	return 0;
+	else
+		return 0;
 }
 
 void BitcoinExchange::print_output(BitcoinExchange& btc)
@@ -116,7 +136,13 @@ void BitcoinExchange::print_output(BitcoinExchange& btc)
 		switch (check_input(n.first, n.second))
 		{
 		case 0:
-			std::cout << n.first << " => " << n.second << btc.calculate_btc(n.first, n.second) << std::endl
+			if (btc.calculate_btc(n.first, n.second) == -1)
+				std::cout << "Error: no data found for date => " << n.first << std::endl;
+			else
+			{
+				std::cout << n.first << "=> " << n.second << " = ";
+				std::cout << btc.calculate_btc(n.first, n.second) << std::endl;
+			}
 			break;	
 		case 1:
 			std::cout << "Error: bad input => " << n.first << std::endl;
@@ -135,5 +161,21 @@ void BitcoinExchange::print_output(BitcoinExchange& btc)
 
 double BitcoinExchange::calculate_btc(std::string date, double value)
 {
-
+	auto exact = _data.find(date);
+	if (exact != _data.end())
+	{
+		return(value * exact->second);
+	}
+	else
+	{
+		auto it = _data.lower_bound(date);
+		if (it == _data.begin())
+			return -1;
+		else
+		{
+			--it;
+			return(value * (it->second));
+		}
+	}
+	return -1;
 }
