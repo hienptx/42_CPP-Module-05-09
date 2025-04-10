@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:39:02 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/27 17:29:42 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/29 15:29:55 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,25 @@
 
 BitcoinExchange::BitcoinExchange(){}
 
-// BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
-// {
-
-// }
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &cpy)
+{
+	_input = cpy._input;
+	_data = cpy._data;
+}
 
 BitcoinExchange::~BitcoinExchange() {}
 
 /*==========OVERLOADING OPERATORS==========*/
 
-// BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
-// {
-// }
-
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
+{
+	if (this != &other)
+	{
+		_input = other._input;
+		_data = other._data;
+	}
+	return *this;
+}
 
 /*==========MEMBER FUNCTIONS==========*/
 
@@ -55,13 +61,18 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 			if (is_pipe != std::string::npos && std::count(line.begin(), line.end(), '|') == 1)
 			{
 				key = line.substr(0, is_pipe);
-				value = std::stod(line.substr(is_pipe + 1));
+				try
+				{
+					value = std::stod(line.substr(is_pipe + 1));
+				}
+				catch(const std::exception& e)
+				{
+					_input.emplace_back(line.substr(is_pipe + 1), 0);
+				}
 				_input.emplace_back(key, value);
 			}
 			else
-			{
 				_input.emplace_back("Wrong format", 0);
-			}
 		}
 	}
 	return 1;
@@ -89,7 +100,9 @@ void BitcoinExchange::process_data(std::ifstream& data)
 				_data.emplace(key, value);
 			}
 			else
+			{
 				;
+			}
 		}
 	}
 }
@@ -99,22 +112,19 @@ bool is_valid_date(const std::string& date)
 	int year, month, day;
 	char dash1, dash2;
 
-	// Parse the date string in the format YYYY-MM-DD
 	std::istringstream date_stream(date);
 	if (!(date_stream >> year >> dash1 >> month >> dash2 >> day) || dash1 != '-' || dash2 != '-')
-	{
-		return false; // Invalid format
-	}
-	// Check if the year, month, and day are in valid ranges
-	if (month < 1 || month > 12) return false;
-	// Days in each month (non-leap year)
+		return false;
+	if (month < 1 || month > 12)
+		return false;
 	int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	// Adjust for leap year
 	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
 		days_in_month[1] = 29;
-	if (day < 1 || day > days_in_month[month - 1]) return false;
+	if (day < 1 || day > days_in_month[month - 1])
+		return false;
 
-return true;
+	return true;
 }
 
 int check_input(std::string date, double value)

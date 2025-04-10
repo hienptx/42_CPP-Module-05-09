@@ -6,41 +6,49 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/16 18:29:05 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/07 16:59:57 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "../includes/MutantStack.hpp"
+#include <iomanip>
+#include <chrono>
+#include "../includes/PmergeMe.hpp"
+#include "../includes/PmergeList.hpp"
+#include "../includes/PmergeDeque.hpp"
 
-int main()
+int main(int ac, char **av)
 {
-    MutantStack<int>
-    mstack;
-    mstack.push(5);
-    mstack.push(17);
-    
-    std::cout << "Last pushed value top(): " << mstack.top() << std::endl;
-    mstack.pop();
-    std::cout << "Size of stack after pop(): " << mstack.size() << std::endl;
-    
-    mstack.push(3);
-    mstack.push(5);
-    mstack.push(737);
-    //[...]
-    mstack.push(0);
-    
-    MutantStack<int>::iterator it = mstack.begin();
-    MutantStack<int>::iterator ite = mstack.end();
-    ++it;
-    --it;
-    std::cout << "Values in stack after incre. and decre. iterator:\n";
-    while (it != ite)
+    if (ac < 2)
     {
-        std::cout << *it << std::endl;
-        ++it;
+        std::cerr << "Error: Invalid number of arguments." << std::endl;
+        std::cerr << "Usage: ./PmergeMe /list of positive integers/" << std::endl;
+        std::cerr << "Example: ./PmergeMe 3 4 2 7" << std::endl;
+        return 1;
     }
-    std::stack<int> s(mstack);
-    
+    PmergeList pmerge;
+    PmergeDeque pmerge2;
+    try 
+    {
+        pmerge.parse_input(ac, av);
+        pmerge.printFunction("Before: ");
+        const auto start = std::chrono::high_resolution_clock::now();   
+        pmerge.FordJohnsonSort();
+        const auto finish = std::chrono::high_resolution_clock::now();   
+        const std::chrono::duration<double, std::micro> duration = finish - start;
+        pmerge2.FordJohnsonSort();
+        pmerge.printFunction("After: ");
+        std::cout << std::fixed << std::setprecision(5);
+        std::cout << "Time to process a range of " << pmerge.size() << " elements: " 
+                << duration.count() << " us" << std::endl;
+        std::cout << "Time to process a range of " << pmerge.size() << " elements: " 
+                << duration.count() << " us" << std::endl;
+
+    }
+    catch (const std::exception  &e)
+    {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
     return 0;
 }

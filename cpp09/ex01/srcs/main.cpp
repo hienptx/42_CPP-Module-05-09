@@ -6,46 +6,31 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/10 17:42:20 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/07 16:01:55 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Span.hpp"
-#include <string>
-#include <iostream>
-#include <time.h>
-#include <cstdlib>
+#include "../includes/RPN.hpp"
 
-int main(void)
+int main(int ac, char **av)
 {
-    Span sp = Span(5);
-
-    try
+    if (ac > 2)
     {
-        sp.addNumber(6);
-        sp.addNumber(3);
-        sp.addNumber(17);
-        sp.addNumber(9);
-        sp.addNumber(11);
-        sp.addNumber(12); // exception should be thrown
+        std::cerr << "Error: Invalid number of arguments." << std::endl;
+        std::cerr << "Usage: ./rpn \"expression\"" << std::endl;
+        std::cerr << "Example: ./rpn \"3 4 + 2 * 7 /\"" << std::endl;
+        return 1;
     }
-    catch(const std::exception &e)
+    RPN rpn;
+    try 
     {
-        std::cerr << e.what();
+        rpn.validate_input(av[1]);
+        rpn.parse_input(rpn);
     }
-    std::cout << sp.getSpanSize() << std::endl;
-    std::cout << sp.shortestSpan() << std::endl;
-    std::cout << sp.longestSpan() << std::endl;
-    
-    std::vector<int> varr;
-    std::srand(std::time(NULL));
-    for (int i = 0; i < 100; i++)
+    catch (const std::exception  &e)
     {
-        varr.push_back(std::rand() % 10000 + 1);
+        std::cerr << e.what() << std::endl;
+        return 1;
     }
-    Span bigspan(900);
-    bigspan.addMoreNumbers(varr);
-    std::cout << bigspan.getSpanSize() << std::endl;
-    std::cout << bigspan.shortestSpan() << std::endl;
-    std::cout << bigspan.longestSpan() << std::endl;
+    return 0;
 }

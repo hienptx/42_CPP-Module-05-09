@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 08:35:57 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/27 17:00:44 by hipham           ###   ########.fr       */
+/*   Updated: 2025/03/29 15:25:44 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ class BitcoinExchange
 		
 	public:
 		BitcoinExchange();
+		BitcoinExchange(const BitcoinExchange &cpy);
+		BitcoinExchange &operator=(const BitcoinExchange &cpy);
 		~BitcoinExchange();
 
 		int parse_input(std::ifstream &input);
