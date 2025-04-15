@@ -48,15 +48,35 @@ unsigned int PmergeDeque::Jacobsthal(unsigned int n)
 
 
 void PmergeDeque::binaryInsert(
-    std::deque<unsigned int> &main,
-    std::deque<unsigned int> &pend,
-    std::deque<unsigned int> &rest)
-{       
-    for (std::size_t i = 0; i < 10; i++)
+    std::deque<unsigned int> &main, std::deque<unsigned int> &pend,
+    std::deque<unsigned int> &rest, std::size_t level)
+{
+    std::size_t range = std::pow(2, level);
+    std::cout << "n = " << _n << std::endl;
+    std::size_t counter = Jacobsthal(_n) - Jacobsthal(_n - 1);
+    while (counter > 0 && pend.size() > 0)
     {
-        std::cout << "n = " << i << " ,";
-        std::cout << "Jacobsthal value = " << Jacobsthal(i) << std::endl;
+        std::deque<unsigned>::iterator it_pend = pend.begin();
+        std::deque<unsigned>::iterator it_main = main.begin();
+        std::deque<unsigned>::iterator big_pend = it_pend + (counter * range) - 1;
+        std::deque<unsigned>::iterator big_main = it_main + (counter * range) - 1;
+        std::cout << "Compare value from pend = " << *big_pend << std::endl;
+        std::cout << "Compare value from main = " << *big_main << std::endl;
+        counter--;
     }
+    std::cout << "Main:     ";
+    for (std::deque<unsigned int>::iterator it1 = main.begin(); it1 != main.end(); it1++)
+        std::cout << *it1 << " ";
+    std::cout << std::endl;
+    std::cout << "Pend:     ";
+    for (std::deque<unsigned int>::iterator it2 = pend.begin(); it2 != pend.end(); it2++)
+        std::cout << *it2 << " ";
+    std::cout << std::endl;
+    std::cout << "Rest      ";
+    for (std::deque<unsigned int>::iterator it3 = rest.begin(); it3 != rest.end(); it3++)
+        std::cout << *it3 << " ";
+    std::cout << std::endl;
+    _n += 1;
 } 
 
 
@@ -67,7 +87,7 @@ void PmergeDeque::establishMainAndPend(std::size_t level)
     std::deque<unsigned int> pend;
     std::deque<unsigned int> rest;
     auto it = _deque.begin();
-    std::size_t nbr_of_element = (_deque.size() / level);  
+    std::size_t nbr_of_element = (_deque.size() / level);
     std::size_t i = 1;
     
     --level;
@@ -89,26 +109,16 @@ void PmergeDeque::establishMainAndPend(std::size_t level)
         }
         i++;
     }
-    // std::cout << "main length: " << main.size() << std::endl;
-    // std::cout << "pend length: " << pend.size() << std::endl;
-    // std::copy(it, _deque.end(), std::back_inserter(rest));
-    // std::cout << "Level: " << level;
-    // std::cout << "  Main" << std::endl;
-    // for (std::deque<unsigned int>::iterator it1 = main.begin(); it1 != main.end(); it1++)
-    //     std::cout << *it1 << " ";
-    // std::cout << std::endl;
-    // std::cout << "Pend" << std::endl;
-    // for (std::deque<unsigned int>::iterator it2 = pend.begin(); it2 != pend.end(); it2++)
-    //     std::cout << *it2 << " ";
-    // std::cout << std::endl;
-    // std::cout << "Rest" << std::endl;
-    // for (std::deque<unsigned int>::iterator it3 = rest.begin(); it3 != rest.end(); it3++)
-    //     std::cout << *it3 << " ";
-    // std::cout << std::endl;
-    // binaryInsert(main, pend, rest);
-    // std::cout << std::endl;
-    if(level >= 1)
-        establishMainAndPend(level);
+    std::copy(it, _deque.end(), std::back_inserter(rest));
+    std::cout << "Level: " << level << std::endl;
+    std::cout << "Main length: " << main.size() << std::endl;
+    std::cout << "Pend length: " << pend.size() << std::endl;
+    std::cout << "Rest length: " << rest.size() << std::endl;
+    binaryInsert(main, pend, rest, level);
+    // _deque = main;
+    std::cout << std::endl;
+    // if(level >= 1)
+    //     establishMainAndPend(level);
 }
 
 void PmergeDeque::PairAndSort(std::size_t level)
@@ -119,7 +129,7 @@ void PmergeDeque::PairAndSort(std::size_t level)
     std::deque<unsigned int>::iterator it = _deque.begin(); 
     std::deque<unsigned int>::iterator tmp = it; 
 
-    std::cout << "Level: " << level << std::endl;
+    // std::cout << "Level: " << level << std::endl;
     if (level == 0)    
     {
         while ((i < size - 1))
@@ -145,7 +155,7 @@ void PmergeDeque::PairAndSort(std::size_t level)
             tmp = tmp + range * 2;
         }
     }
-    printFunction("");
+    // printFunction("");
     if (std::pow(2, level + 1) < size / 2)
     {
         level += 1;

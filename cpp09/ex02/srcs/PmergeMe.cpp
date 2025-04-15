@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 11:35:36 by hipham            #+#    #+#             */
-/*   Updated: 2025/04/07 16:59:12 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/15 16:52:50 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 PmergeMe::PmergeMe()
 {
+    _n = 3;
 }
 
 PmergeMe::PmergeMe(const PmergeMe &cpy)
