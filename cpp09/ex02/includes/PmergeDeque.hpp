@@ -17,6 +17,7 @@ class PmergeDeque : public PmergeMe
         void PairAndSort(std::size_t level) override;
         void establishMainAndPend(std::size_t level);
         unsigned int Jacobsthal(unsigned int n);
+        void setJacobsIndices(std::size_t n);
         // void mergeSort(std::deque<unsigned int> &bigVals, std::deque<unsigned int> &smallVals);
         void binaryInsert(  std::deque<unsigned int> &main,
                             std::deque<unsigned int> &pend,

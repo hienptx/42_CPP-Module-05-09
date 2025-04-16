@@ -46,23 +46,79 @@ unsigned int PmergeDeque::Jacobsthal(unsigned int n)
     return (std::pow(2, n) - std::pow(-1, n)) / 3;
 }
 
+void PmergeDeque::setJacobsIndices(std::size_t n)
+{
+    jacobIndices.clear();
+    for (std::size_t i = 0; i < n; ++i)
+    {
+        if (i == 0 || i == 1)
+            jacobIndices.push_back(i);
+        else
+        {
+            std::size_t j = Jacobsthal(i);
+            if (j > 0 && j < _deque.size())
+                jacobIndices.push_back(j);
+        }
+    }
+}
 
 void PmergeDeque::binaryInsert(
     std::deque<unsigned int> &main, std::deque<unsigned int> &pend,
     std::deque<unsigned int> &rest, std::size_t level)
 {
+    std::deque<unsigned int> bigValsMain;
+    std::deque<unsigned int>::iterator mid;
     std::size_t range = std::pow(2, level);
     std::cout << "n = " << _n << std::endl;
-    std::size_t counter = Jacobsthal(_n) - Jacobsthal(_n - 1);
-    while (counter > 0 && pend.size() > 0)
+    std::size_t jnbr = Jacobsthal(_n);
+    std::size_t counter = jnbr - Jacobsthal(_n - 1);
+
+    // while (counter > 0 && !pend.empty())
+    // {
+    //     std::size_t block_end_index = counter * range - 1;
+    //     if (block_end_index >= pend.size())
+    //         break;
+    //     auto block_start = pend.begin() + (counter - 1) * range;
+    //     auto block_end = block_start + range;
+    //     auto big_pend = block_end - 1;
+    //     // Calculate middle insertion point in `main`
+    //     std::size_t num_blocks = main.size() / range;
+    //     std::size_t mid_index = (num_blocks % 2 == 0)
+    //         ? range * (num_blocks / 2) - 1
+    //         : range * ((num_blocks / 2) + 1) - 1;
+    //     if (mid_index >= main.size())
+    //         break;
+    //     auto mid = main.begin() + mid_index;
+    //     // Move forward to find correct insert position
+    //     while (*big_pend > *mid && std::distance(mid, main.end()) > static_cast<long>(range))
+    //         mid += range;
+    //     // Insert block before the found mid position
+    //     if (std::distance(main.begin(), mid) >= static_cast<long>(range))
+    //         main.insert(mid - (range - 1), block_start, block_end);
+    //     counter--;
+    // }
+    for (std::size_t i = 0; i < jacobIndices.size(); ++i)
     {
-        std::deque<unsigned>::iterator it_pend = pend.begin();
-        std::deque<unsigned>::iterator it_main = main.begin();
-        std::deque<unsigned>::iterator big_pend = it_pend + (counter * range) - 1;
-        std::deque<unsigned>::iterator big_main = it_main + (counter * range) - 1;
-        std::cout << "Compare value from pend = " << *big_pend << std::endl;
-        std::cout << "Compare value from main = " << *big_main << std::endl;
-        counter--;
+        std::size_t idx = jacobIndices[i];
+        std::size_t start_idx = idx * range;
+        if (start_idx + range > pend.size()) continue;
+        auto block_start = pend.begin() + start_idx;
+        auto block_end = block_start + range;
+        auto big_pend = block_end - 1;
+
+        std::size_t num_blocks = main.size() / range;
+        std::size_t mid_index = (num_blocks % 2 == 0)
+            ? range * (num_blocks / 2) - 1
+            : range * ((num_blocks / 2) + 1) - 1;
+        if (mid_index >= main.size())
+            break;
+        auto mid = main.begin() + mid_index;
+
+        while (*big_pend > *mid && std::distance(mid, main.end()) > static_cast<long>(range))
+            mid += range;
+
+        if (std::distance(main.begin(), mid) >= static_cast<long>(range))
+            main.insert(mid - (range - 1), block_start, block_end);
     }
     std::cout << "Main:     ";
     for (std::deque<unsigned int>::iterator it1 = main.begin(); it1 != main.end(); it1++)
@@ -115,10 +171,18 @@ void PmergeDeque::establishMainAndPend(std::size_t level)
     std::cout << "Pend length: " << pend.size() << std::endl;
     std::cout << "Rest length: " << rest.size() << std::endl;
     binaryInsert(main, pend, rest, level);
-    // _deque = main;
+    std::copy(rest.begin(), rest.end(), std::back_inserter(main));
+    _deque.clear();
+    _deque = main;
+    pend.clear();
+    rest.clear();
+    main.clear();
+    std::cout << "Deque:     ";
+    for (std::deque<unsigned int>::iterator it1 = _deque.begin(); it1 != _deque.end(); it1++)
+        std::cout << *it1 << " ";
     std::cout << std::endl;
-    // if(level >= 1)
-    //     establishMainAndPend(level);
+    if(level >= 1)
+        establishMainAndPend(level);
 }
 
 void PmergeDeque::PairAndSort(std::size_t level)
@@ -144,11 +208,6 @@ void PmergeDeque::PairAndSort(std::size_t level)
         i = range - 1;
         while (i + range < size)
         {
-            // if(level == 2)
-            // {
-            //     std::cout << "First pair: " << _deque[i] << std::endl;
-            //     std::cout << "Second pair: " << _deque[i + range] << std::endl;   
-            // }
             if (_deque[i] > _deque[i + range])
                 std::swap_ranges(tmp, tmp + range, tmp + range);
             i = i + range * 2;
