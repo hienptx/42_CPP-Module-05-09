@@ -32,21 +32,22 @@ int main(int ac, char **av)
     {
         
         // pmerge.printFunction("Before: ");
-        // const auto start = std::chrono::high_resolution_clock::now();   
         // pmerge.FordJohnsonSort();
-        // const auto finish = std::chrono::high_resolution_clock::now();   
-        // const std::chrono::duration<double, std::micro> duration = finish - start;
         // pmerge2.FordJohnsonSort();
         // pmerge.printFunction("After: ");
-        // std::cout << std::fixed << std::setprecision(5);
-        // std::cout << "Time to process a range of " << pmerge.size() << " elements: " 
-        //         << duration.count() << " us" << std::endl;
-        // std::cout << "Time to process a range of " << pmerge.size() << " elements: " 
-        //         << duration.count() << " us" << std::endl;
+        std::cout << std::fixed << std::setprecision(5);
         pmerge2.parse_input(ac, av);
+        
         pmerge2.printFunction("Before: ");
+        const auto start = std::chrono::high_resolution_clock::now();   
         pmerge2.FordJohnsonSort();
+        const auto finish = std::chrono::high_resolution_clock::now();   
+        const std::chrono::duration<double, std::micro> duration = finish - start;
+        std::cout << "Time to process a range of " << pmerge2.getDequeSize() << " elements: " 
+            << duration.count() << " us" << std::endl;
         pmerge2.printFunction("After: ");
+        std::cout << "Number of comparisons from FJAlgr: " << pmerge2.F(pmerge2.getDequeSize()) << std::endl;
+        std::cout << "Number of comparisons: " << pmerge2.getCounter() << std::endl;
     }
     catch (const std::exception  &e)
     {

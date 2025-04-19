@@ -14,7 +14,7 @@
 
 PmergeMe::PmergeMe()
 {
-    _n = 3;
+    // _n = 3;
 }
 
 PmergeMe::PmergeMe(const PmergeMe &cpy)
@@ -51,4 +51,19 @@ void PmergeMe::parse_input(int ac, char **av)
         _list.push_back(num);
         _deque.push_back(num);
     }
+}
+
+int PmergeMe::F(std::size_t size)
+{
+    int sum = 0;
+    for (std::size_t k = 1; k <= size; ++k) {
+        double value = (3.0 / 4.0) * k;
+        sum += static_cast<int>(ceil(log2(value)));
+    }
+    return sum;
+}
+
+std::size_t PmergeMe::getDequeSize() const
+{
+    return _deque.size();
 }

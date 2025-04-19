@@ -25,9 +25,12 @@ class PmergeMe
         ~PmergeMe();
 
         void parse_input(int ac, char **av);
-        virtual void printFunction(std::string message) const = 0;
         virtual void FordJohnsonSort() = 0;
         virtual void PairAndSort(std::size_t level) = 0;
+        virtual void printFunction(std::string message) const = 0;
+        int F(std::size_t size);
+        std::size_t getDequeSize() const;
+       
         // virtual void mergeSort(std::list<unsigned int> &bigVals, std::list<unsigned int> &smallVals) = 0;
         // virtual void insertSort(std::list<unsigned int> &list, unsigned int value) = 0;
         // virtual void binaryInsert(std::list<unsigned int> &list, unsigned int value) = 0;
