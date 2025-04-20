@@ -14,7 +14,6 @@
 
 PmergeMe::PmergeMe()
 {
-    // _n = 3;
 }
 
 PmergeMe::PmergeMe(const PmergeMe &cpy)
@@ -26,7 +25,7 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &cpy)
 {
     if (this != &cpy)
     {
-        this->_list = cpy._list;
+        this->_vector = cpy._vector;
         this->_deque = cpy._deque;
     }
     return *this;
@@ -34,6 +33,16 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &cpy)
 
 PmergeMe::~PmergeMe()
 {
+}
+
+std::deque<unsigned int> PmergeMe::getDeque() const
+{
+    return _deque;
+}
+
+std::vector<unsigned int> PmergeMe::getVector() const
+{
+    return _vector;
 }
 
 void PmergeMe::parse_input(int ac, char **av)
@@ -48,7 +57,7 @@ void PmergeMe::parse_input(int ac, char **av)
         unsigned int num = std::stoul(arg);
         if (num > 2147483647)
             throw std::out_of_range("Error: Number out of range.");
-        _list.push_back(num);
+        _vector.push_back(num);
         _deque.push_back(num);
     }
 }
@@ -63,7 +72,7 @@ int PmergeMe::F(std::size_t size)
     return sum;
 }
 
-std::size_t PmergeMe::getDequeSize() const
+unsigned int PmergeMe::Jacobsthal(unsigned int n)
 {
-    return _deque.size();
+    return (std::pow(2, n) - std::pow(-1, n)) / 3;
 }

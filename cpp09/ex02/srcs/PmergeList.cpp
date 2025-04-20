@@ -1,114 +1,248 @@
-#include "../includes/PmergeList.hpp"
+#include "../includes/PmergeVector.hpp"
 
-PmergeList::PmergeList()
+PmergeVector::PmergeVector()
 {
 }
 
-PmergeList::PmergeList(const PmergeList &cpy)
+PmergeVector::PmergeVector(const PmergeVector &cpy)
 : PmergeMe(cpy)
 {
     *this = cpy;
 }
 
-PmergeList &PmergeList::operator=(const PmergeList &cpy)
+PmergeVector &PmergeVector::operator=(const PmergeVector &cpy)
 {
     if (this != &cpy)
     {
-        this->_list = cpy._list;
-        this->_deque = cpy._deque;
+        this->_vector = cpy._vector;
+        this->_vector = cpy._vector;
     }
     return *this;
 }
 
-PmergeList::~PmergeList()
+PmergeVector::~PmergeVector()
 {
 }
 
-void PmergeList::printFunction(std::string message) const
+// Getters
+std::size_t PmergeVector::getCounter() const
 {
-    std::list<unsigned int>::const_iterator it = _list.begin();
-    
-    std::cout << message;
-    while(it != _list.end())
+    return _counter;
+}
+
+// Override of pure functions
+void PmergeVector::FordJohnsonSort()
+{
+    if(isSorted(_vector.begin(), _vector.end()) == true)
+        return;
+    if (_vector.size() <= 3)
     {
-        std::cout << *it << " ";
-        ++it;
+        std::sort(_vector
+.begin(), _vector.end());
+        return;
     }
-    std::cout << std::endl;
+    PairAndSort(0);
+    establishMainAndPend(_level);
+    if (!isSorted(_vector.begin(), _vector.end()))
+    {
+        std::cout << "Vector is not sorted after binary insert." << std::endl;
+        return;
+    }
 }
 
-void PmergeList::mergeSort(std::list<unsigned int> &bigVals, std::list<unsigned int> &smallVals)    
+void PmergeVector::PairAndSort(std::size_t level)
 {
-    std::list <unsigned int>::iterator it = _list.begin();
+    std::size_t i = 0;
+    std::size_t size = _vector.size();
+    std::size_t range = std::pow(2, level);
+    std::vector<unsigned int>::iterator it = _vector.begin(); 
+    std::vector<unsigned int>::iterator tmp = it; 
     
-    while (it != _list.end())
+    // std::cout << "Level: " << level << std::endl;
+    if (level == 0)    
     {
-        int first = *it;
-        ++it;
-        if (it != _list.end())
+        while ((i < size - 1))
         {
-            int second = *it;
-            ++it;
-            if (first > second)
+            if (_vector[i] > _vector[i + 1])
             {
-                bigVals.push_back(first);
-                smallVals.push_back(second);
+                _counter++;
+                std::swap(_vector[i], _vector[i + 1]);
             }
-            else
+            i += 2;
+        }
+    }
+    else
+    {
+        i = range - 1;
+        while (i + range < size)
+        {
+            if (_vector[i] > _vector[i + range])
             {
-                bigVals.push_back(second);
-                smallVals.push_back(first);
+                _counter++;
+                std::swap_ranges(tmp, tmp + range, tmp + range);
             }
+            i = i + range * 2;
+            tmp = tmp + range * 2;
+        }
+    }
+    if (std::pow(2, level + 1) <= size / 2)
+    {
+        level += 1;
+        _level = level;
+        PairAndSort(level);
+    }
+}
+
+
+void PmergeVector::establishMainAndPend(std::size_t level)
+{
+    std::vector<unsigned int> main;
+    std::vector<unsigned int> pend;
+    std::vector<unsigned int> rest;
+    auto it = _vector.begin();
+    std::size_t i = 1;
+    
+    if (level == 0)
+        return;
+    std::size_t nbr_of_element = (_vector.size() / level);
+    --level;
+    std::size_t range = std::pow(2, level);
+    while ( i <= nbr_of_element && i *  range <= _vector.size())
+    {
+        if (i == 1 || i == 2)
+        {
+            std::copy(it, std::next(it, range), std::back_inserter(main));
+            std::advance(it, range);
         }
         else
-            smallVals.push_back(first);
+        {
+            if (i % 2 == 0)
+                std::copy(it, std::next(it, range), std::back_inserter(main));
+            else
+                std::copy(it, std::next(it, range), std::back_inserter(pend));
+            std::advance(it, range);
+        }
+        i++;
     }
+    if (it != _vector.end())
+        std::copy(it, _vector.end(), std::back_inserter(rest));
+    // printvector(_vector, "vector before:     ");
+    // printvector(main, "Main before:     ");
+    // printvector(pend, "Pend before:     ");
+    // printvector(rest, "Rest before:     ");
+
+    sort_chunks_in_main(main, range);
+    binaryInsert(main, pend, level);
+    std::copy(rest.begin(), rest.end(), std::back_inserter(main));
+    _vector.clear();
+    _vector = main;
+    pend.clear();
+    rest.clear();
+    main.clear();
+    if(level >= 1)
+        establishMainAndPend(level);
 }
 
-void PmergeList::FordJohnsonSort()
+void PmergeVector::binaryInsert(  std::vector<unsigned int> &main,
+                    std::vector<unsigned int> &pend,
+                    std::size_t level)
 {
-    // Implement merge sort algorithm for list
-    std::list <unsigned int> bigVals, smallVals;
-
-    if (_list.size() <= 1)
-        return;
-    mergeSort(bigVals, smallVals);
-    _list = bigVals;
-    FordJohnsonSort();
-    for (int value : smallVals)
-        binaryInsert(_list, value);
-}
-
-void PmergeList::binaryInsert(std::list<unsigned int> &list, unsigned int value)
-{
-    // Define the range for binary search
-    auto begin = list.begin();
-    auto end = list.end();
-
-    // Perform binary search manually
-    while (begin != end)
+    std::vector<unsigned int>::iterator mid;
+    std::size_t range = std::pow(2, level);
+    std::vector<unsigned int>::iterator pos;
+    std::size_t num_blocks;
+    
+    _n = 3;
+    while (pend.size() != 0)
     {
-        // Find the middle point by advancing the iterator
-        auto middle = begin;
-        std::advance(middle, std::distance(begin, end) / 2);
-        if (*middle < value)
-            begin = ++middle; // Move the lower bound up
-        else
-            end = middle; // Narrow the upper bound
+        num_blocks = std::pow(2, (_n - 1)) - 1;
+        std::size_t counter = Jacobsthal(_n) - Jacobsthal(_n - 1);
+        while (counter > 0 && pend.size() != 0)
+        {
+            std::size_t remain_elements = pend.size() / range;
+            if (remain_elements < counter)
+                counter = remain_elements;
+            // std::cout << "jacob = " << Jacobsthal(_n);
+            // std::cout << "  |   range = " << range;
+            // std::cout << "  |   counter = " << counter;
+            // std::cout << "  |   bound index = " << num_blocks << std::endl;
+
+            auto block_start = pend.begin() + (counter - 1) * range;
+            auto block_end = block_start + range - 1;
+            // std::cout << "pending block = " << *block_start;
+            // std::cout << " " << *block_end << std::endl;
+    
+            pos = getInsertPos(main, range, num_blocks, *block_end);
+            main.insert(pos, block_start, block_end + 1);
+            pend.erase(block_start, block_end + 1);
+            // printvector(main, "Main after insert:     ");
+            // printvector(pend, "Pend after insert:     ");
+            // printvector(rest, "Rest after insert:     ");
+            counter--;
+        }    
+        _n += 1;
     }
-    // Insert the value at the correct position
-    list.insert(begin, value);
 }
 
-// void PmergeList::insertSort(std::list<unsigned int> &list, unsigned int value)
-// {
-//     std::list<unsigned int>::iterator it = list.begin();
-//     while (it != list.end() && *it < value)
-//         ++it;
-//     list.insert(it, value);
-// }
-
-std::size_t PmergeList::size()
+void PmergeVector::sort_chunks_in_main(std::vector<unsigned int>& seq,
+    std::size_t range)
 {
-    return _list.size();
+    if (range == 0 || seq.empty()) return;
+
+    std::vector<std::vector<unsigned int>> chunks;
+
+    for (size_t i = seq.size(); i > 0; i -= range) 
+    {
+        size_t chunk_start = (i >= range) ? i - range : 0;
+        std::vector<unsigned int> chunk(seq.begin() + chunk_start, seq.begin() + i);
+        chunks.insert(chunks.begin(), chunk); // replaces push_front
+    }
+    for (size_t i = 0; i < chunks.size(); ++i) 
+    {
+        for (size_t j = 0; j < chunks.size() - 1 - i; ++j) 
+        {
+            if (chunks[j].back() > chunks[j + 1].back())
+            {
+            std::swap(chunks[j], chunks[j + 1]);
+            _counter++;
+            } 
+        }
+    }
+    seq.clear();
+    for (const auto& chunk : chunks)
+    seq.insert(seq.end(), chunk.begin(), chunk.end());
+}
+
+    
+std::vector<unsigned int>::iterator PmergeVector::getInsertPos(std::vector<unsigned int> &main,
+                        std::size_t range, std::size_t num_blocks,
+                        unsigned int value)
+{
+    std::vector<unsigned int>::iterator pos;
+    std::vector<unsigned int>::iterator it;
+    std::vector<unsigned int> comparevector;
+
+    for (std::size_t i = 1; i <= num_blocks; i++)
+    {
+        if ((i * range) - 1 < main.size())
+            comparevector.push_back(main[(i * range) - 1]);
+    }
+    it = comparevector.begin();
+    std::size_t left = 0;
+    std::size_t right = comparevector.size();
+    while (left < right)
+    {
+        _counter++;
+        std::size_t mid = left + (right - left) / 2;
+        if (comparevector[mid] < value)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    unsigned int offset = left * range;
+    if (offset <= main.size())
+        pos = main.begin() + offset;
+    else
+        pos = main.end();
+    return pos;
 }

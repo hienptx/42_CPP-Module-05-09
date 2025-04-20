@@ -13,7 +13,7 @@ PmergeDeque &PmergeDeque::operator=(const PmergeDeque &cpy)
 {
     if (this != &cpy)
     {
-        this->_list = cpy._list;
+        this->_vector = cpy._vector;
         this->_deque = cpy._deque;
     }
     return *this;
@@ -21,29 +21,6 @@ PmergeDeque &PmergeDeque::operator=(const PmergeDeque &cpy)
 
 PmergeDeque::~PmergeDeque()
 {}
-
-void PmergeDeque::printFunction(std::string message) const
-{
-    std::deque<unsigned int>::const_iterator it = _deque.begin();
-    
-    std::cout << message;
-    while(it != _deque.end())
-    {
-        std::cout << *it << " ";
-        ++it;
-    }
-    std::cout << "| size = " << _deque.size() << std::endl;
-}
-
-bool isSorted(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
-{
-    for (auto it = begin; it != end - 1; ++it)
-    {
-        if (*it > *(it + 1))
-            return false;
-    }
-    return true;
-}
 
 std::size_t PmergeDeque::getCounter() const
 {
@@ -68,19 +45,11 @@ void PmergeDeque::FordJohnsonSort()
     }
 }
 
-unsigned int PmergeDeque::Jacobsthal(unsigned int n)
-{
-    return (std::pow(2, n) - std::pow(-1, n)) / 3;
-}
-
-void printDeque(std::deque<unsigned int> &deque, std::string message)
-{
-    std::cout << message;
-    for (std::deque<unsigned int>::iterator it = deque.begin(); it != deque.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-}
-
+/*
+    This function determines the correct insertion position in main deque for a block 
+    (ending in value), using binary search among specific "boundary" defined by 
+    2^(k+1)-1 elements taken from the main deque. And insert the block in binary search.
+*/
 // std::deque<unsigned int>::iterator PmergeDeque::getInsertPos(
 //     std::deque<unsigned int> &main, std::size_t range, std::size_t num_blocks, unsigned int value)
 // {
@@ -133,6 +102,15 @@ std::deque<unsigned int>::iterator PmergeDeque::getInsertPos(
     return pos;
 }
 
+/*
+    This function inserts sorted blocks from a pend deque into the main deque using
+    binary search logic based on the Ford-Johnson merge-insertion algorithm 
+    (optimized via the Jacobsthal sequence). Key Concepts:
+    - range: size of each block (based on recursion level)
+    - Jacobsthal(_n): determines how many blocks to insert in each round
+    - getInsertPos(...): finds the correct position in main to insert a block based on
+    binary search among selected comparison elements
+*/
 void PmergeDeque::binaryInsert(
     std::deque<unsigned int> &main, std::deque<unsigned int> &pend,
     std::size_t level)
@@ -201,6 +179,14 @@ void PmergeDeque::sort_chunks_in_main(std::deque<unsigned int>& seq, std::size_t
         seq.insert(seq.end(), chunk.begin(), chunk.end());
 }
 
+/*
+    This function takes a level as an argument and establishes the main and
+    pending deques. It does this by iterating through the original deque and
+    copying elements into the main and pending deques based on the level. The
+    function also sorts the chunks in the main deque and performs a binary
+    insert of the pending deque into the main deque. Finally, it clears the
+    original deque and copies the sorted elements back into it.
+*/
 // main contains a1, b1 and rest of a(s)
 void PmergeDeque::establishMainAndPend(std::size_t level)
 {
@@ -250,7 +236,15 @@ void PmergeDeque::establishMainAndPend(std::size_t level)
     if(level >= 1)
         establishMainAndPend(level);
 }
-    
+
+/*
+    In this function, we are pairing the elements of the deque and sorting them
+    in place. The function is called recursively until the level is greater than
+    half the size of the deque. The level is incremented by 1 in each recursive
+    call. The function uses a range variable to determine the size of the pairs
+    to be sorted. The function uses a while loop to iterate through the deque
+    and swap the elements if they are out of order.
+*/
 void PmergeDeque::PairAndSort(std::size_t level)
 {
     std::size_t i = 0;
@@ -293,7 +287,6 @@ void PmergeDeque::PairAndSort(std::size_t level)
         PairAndSort(level);
     }
 }
-
 
 // void PmergeDeque::binaryInsert(
 //     std::deque<unsigned int> &main, std::deque<unsigned int> &pend,
@@ -380,5 +373,3 @@ void PmergeDeque::PairAndSort(std::size_t level)
 //     }
 //     std::cout << std::endl;
 // } 
-
-// 6 15 8 16 2 11 0 17  9 18 14 19 3 10 1 21  5 12 4 20 7 13 

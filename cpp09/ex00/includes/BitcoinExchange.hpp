@@ -14,7 +14,7 @@
 #define BITCOINEXCHANGE_HPP
 
 #include <iostream>
-#include <vector>
+#include <list>
 #include <utility>
 #include <regex>
 #include <fstream>
@@ -26,7 +26,7 @@
 class BitcoinExchange
 {
 	private:
-		std::vector<std::pair <std::string, double>> _input;
+		std::list<std::pair <std::string, double>> _input;
 		std::multimap<std::string, double> _data;
 		
 	public:
