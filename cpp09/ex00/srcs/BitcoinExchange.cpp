@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:39:02 by hipham            #+#    #+#             */
-/*   Updated: 2025/04/21 17:39:55 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/21 22:04:29 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,18 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 	std::string		line;
 	size_t			is_pipe;
 	std::string		key;
+	std::string		val;
 	double			value;
 	bool			first = true;
-	std::regex 		first_line(R"(^data\s*\|\s*value$)");
+	std::regex 		first_line(R"(^date \| value$)");
+	std::regex		string(R"(^[?0-9]+\.[?0-9]+$)");
 	
 	while(std::getline(input, line))
 	{
 		if (first)
 		{
-			if(std::regex_match(line, first_line))
-				return std::cerr << "Error: Wrong format\n", 0;
+			if(std::regex_match(line, first_line) == false)
+				return std::cerr << "Error: Invalid input\n", 0;
 			first = false;
 		}
 		else
@@ -61,7 +63,8 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 			if (is_pipe != std::string::npos && std::count(line.begin(), line.end(), '|') == 1)
 			{
 				key = line.substr(0, is_pipe);
-				if (line.substr(is_pipe + 1) == "" || line.substr(0, is_pipe) == "")
+				std::string l2 = line.substr(is_pipe + 2);
+				if (key == "" || l2 == "" || std::regex_match(l2, string) == false)
 					_input.emplace_back("Wrong format", 0);
 				else
 				{
