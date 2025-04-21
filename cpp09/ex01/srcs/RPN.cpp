@@ -31,35 +31,35 @@ void RPN::validate_input(const std::string &input)
 		throw std::invalid_argument("Error: Invalid character in input.");
 	if (input.find_first_of("+-*/") == std::string::npos)
 		throw std::invalid_argument("Error: No operator found in input.");
-	_input = input;		
+	_input = input;
 }
 
 void RPN::calculate(char op)
 {
-    if (_stack.size() < 2)
-        throw std::runtime_error("Error: Not enough operands.");
-    int a = _stack.top();
-    _stack.pop();
-    int b = _stack.top();
-    _stack.pop();
-    switch (op)
-    {
-        case '+':
-            _stack.push(b + a);
-            break;
-        case '-':
-            _stack.push(b - a);
-            break;
-        case '*':
-            _stack.push(b * a);
-            break;
-        case '/':
-            if (a == 0)
-                throw std::runtime_error("Error: Division by zero.");
-            _stack.push(b / a);
-            break;
-        default:
-            throw std::invalid_argument("Error: Invalid operator.");
+	if (_stack.size() < 2)
+		throw std::runtime_error("Error: Not enough operands.");
+	int a = _stack.top();
+	_stack.pop();
+	int b = _stack.top();
+	_stack.pop();
+	switch (op)
+	{	
+		case '+':
+			_stack.push(b + a);
+			break;
+		case '-':
+			_stack.push(b - a);
+			break;
+		case '*':
+			_stack.push(b * a);
+			break;
+		case '/':
+			if (a == 0)
+				throw std::runtime_error("Error: Division by zero.");
+			_stack.push(b / a);
+			break;
+		default:
+			throw std::invalid_argument("Error: Invalid operator.");
     }
 }
 

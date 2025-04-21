@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:39:02 by hipham            #+#    #+#             */
-/*   Updated: 2025/03/29 15:29:55 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/21 17:39:55 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 
 int BitcoinExchange::parse_input(std::ifstream &input)
 {
-    std::string		line;
+	std::string		line;
 	size_t			is_pipe;
 	std::string		key;
 	double			value;
@@ -61,15 +61,20 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 			if (is_pipe != std::string::npos && std::count(line.begin(), line.end(), '|') == 1)
 			{
 				key = line.substr(0, is_pipe);
-				try
+				if (line.substr(is_pipe + 1) == "" || line.substr(0, is_pipe) == "")
+					_input.emplace_back("Wrong format", 0);
+				else
 				{
-					value = std::stod(line.substr(is_pipe + 1));
+					try
+					{
+						value = std::stod(line.substr(is_pipe + 1));
+					}
+					catch(const std::exception& e)
+					{
+						_input.emplace_back(line.substr(is_pipe + 1), 0);
+					}
+					_input.emplace_back(key, value);
 				}
-				catch(const std::exception& e)
-				{
-					_input.emplace_back(line.substr(is_pipe + 1), 0);
-				}
-				_input.emplace_back(key, value);
 			}
 			else
 				_input.emplace_back("Wrong format", 0);
@@ -85,23 +90,38 @@ void BitcoinExchange::process_data(std::ifstream& data)
 	std::string		key;
 	size_t			is_comma;
 	bool first = true;
+	std::regex fist_line(R"(^date\s*,\s*exchange_rate$)");
 
 	while (std::getline(data, line))
 	{
 		if (first)
+		{
 			first = false;
+			if (!(std::regex_match(line, fist_line)))
+			{
+				std::cerr << "Error: Invalid Data Set\n";
+				exit(0);
+			}
+		}
 		else
 		{
 			is_comma = line.find(',');
 			if (is_comma != std::string::npos)
 			{
 				key = line.substr(0, is_comma);
-				value = std::stod(line.substr(is_comma + 1));
+				try
+				{
+					value = std::stod(line.substr(is_comma + 1));
+				}
+				catch(const std::exception& e)
+				{
+					continue ;
+				}
 				_data.emplace(key, value);
 			}
 			else
 			{
-				;
+				continue ;
 			}
 		}
 	}

@@ -19,12 +19,12 @@ This guide provides a quick comparison of four common C++ Standard Template Libr
 
 ## Overview
 
-| Container | Type                 | Memory Layout  | Random Access | Insert/Delete (Front) | Insert/Delete (Back) | Insert/Delete (Middle) |
-|-----------|----------------------|----------------|---------------|-----------------------|----------------------|------------------------|
-| `vector`  | Dynamic array         | Contiguous     | ✅ O(1)       | ❌ O(N)               | ✅ O(1)              | ❌ O(N)                |
-| `deque`   | Double-ended queue    | Segmented blocks | ✅ O(1)     | ✅ O(1)               | ✅ O(1)              | ❌ O(N)                |
-| `stack`   | LIFO container        | Uses deque (default) | ❌         | ❌                    | ✅ O(1)              | ❌                     |
-| `list`    | Doubly linked list    | Non-contiguous | ❌ O(N)       | ✅ O(1)               | ✅ O(1)              | ✅ O(1) (via iterator) |
+| Container | Type                 | Memory Layout      | Random Access | Insert/Delete (Front) | Insert/Delete (Back) | Insert/Delete (Middle) |
+|-----------|----------------------|--------------------|---------------|-----------------------|----------------------|------------------------|
+| `vector`  | Dynamic array         | Contiguous        | ✅ O(1)       | ❌ O(N)               | ✅ O(1)              | ❌ O(N)                |
+| `deque`   | Double-ended queue    | Segmented blocks  | ✅ O(1)       | ✅ O(1)               | ✅ O(1)              | ❌ O(N)                |
+| `stack`   | LIFO container        | Uses deque        | ❌            | ❌                    | ✅ O(1)              | ❌                     |
+| `list`    | Doubly linked list    | Non-contiguous    | ❌ O(N)       | ✅ O(1)               | ✅ O(1)              | ✅ O(1) (via iterator) |
 
 ## Choosing the Right Container
 

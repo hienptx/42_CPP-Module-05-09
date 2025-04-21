@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PmergeList.cpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/21 16:15:17 by hipham            #+#    #+#             */
+/*   Updated: 2025/04/21 16:36:05 by hipham           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/PmergeVector.hpp"
 
 PmergeVector::PmergeVector()
@@ -37,8 +49,7 @@ void PmergeVector::FordJohnsonSort()
         return;
     if (_vector.size() <= 3)
     {
-        std::sort(_vector
-.begin(), _vector.end());
+        std::sort(_vector.begin(), _vector.end());
         return;
     }
     PairAndSort(0);
@@ -147,7 +158,7 @@ void PmergeVector::binaryInsert(  std::vector<unsigned int> &main,
                     std::vector<unsigned int> &pend,
                     std::size_t level)
 {
-    std::vector<unsigned int>::iterator mid;
+
     std::size_t range = std::pow(2, level);
     std::vector<unsigned int>::iterator pos;
     std::size_t num_blocks;
@@ -210,7 +221,7 @@ void PmergeVector::sort_chunks_in_main(std::vector<unsigned int>& seq,
     }
     seq.clear();
     for (const auto& chunk : chunks)
-    seq.insert(seq.end(), chunk.begin(), chunk.end());
+        seq.insert(seq.end(), chunk.begin(), chunk.end());
 }
 
     

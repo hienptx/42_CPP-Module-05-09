@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 11:35:36 by hipham            #+#    #+#             */
-/*   Updated: 2025/04/15 16:52:50 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/21 16:28:51 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ PmergeMe::PmergeMe()
 {
 }
 
-PmergeMe::PmergeMe(const PmergeMe &cpy)
+PmergeMe::PmergeMe(const PmergeMe &cpy) : _vector(cpy._vector), _deque(cpy._deque)
 {
-    *this = cpy;
 }
 
 PmergeMe &PmergeMe::operator=(const PmergeMe &cpy)
@@ -61,7 +60,9 @@ void PmergeMe::parse_input(int ac, char **av)
         _deque.push_back(num);
     }
 }
-
+/*
+    F(n)\=k\=1∑n​⌈log2​(43​⋅k)⌉
+*/
 int PmergeMe::F(std::size_t size)
 {
     int sum = 0;

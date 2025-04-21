@@ -39,7 +39,16 @@
     	- Find shortest and longest span of the integer vector
 	ex02: MutantStack
     	- Create iterator functionality for std::stack
-## Module 09: 
+		
+## Module 09: Containters, Abstract Class, Template functions, Static Functions
+	ex00: Bitcoin Exchange
+		- from provided dataset "bitcoin exchange rate", the program supposes to take "input.txt" as input, then output the value of a certain amount of bitcoin on certain date. 
+		- Using std::list<>
+	ex01: Reverse Polish Notation
+		- Using std::stack<>
+	ex02: PmergeMe
+		- Ford-Johnson Algorithm
+		- Using std::vector<> and deque<>
 
 ## Source links:
 [Static method](https://unstop.com/blog/static-member-function-in-cpp)

@@ -13,11 +13,11 @@ PmergeDeque &PmergeDeque::operator=(const PmergeDeque &cpy)
 {
     if (this != &cpy)
     {
-        this->_vector = cpy._vector;
-        this->_deque = cpy._deque;
+        PmergeMe::operator=(cpy); // Use base class assignment operator
+        _counter = cpy._counter;
     }
     return *this;
-}   
+}
 
 PmergeDeque::~PmergeDeque()
 {}

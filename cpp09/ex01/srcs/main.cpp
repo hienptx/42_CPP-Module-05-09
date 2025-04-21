@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:31:37 by hipham            #+#    #+#             */
-/*   Updated: 2025/04/07 16:01:55 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/21 16:07:33 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int main(int ac, char **av)
 {
-    if (ac > 2)
+    if (ac != 2)
     {
         std::cerr << "Error: Invalid number of arguments." << std::endl;
         std::cerr << "Usage: ./rpn \"expression\"" << std::endl;
