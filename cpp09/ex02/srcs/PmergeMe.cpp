@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 11:35:36 by hipham            #+#    #+#             */
-/*   Updated: 2025/04/21 16:28:51 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/22 13:01:38 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,3 +77,4 @@ unsigned int PmergeMe::Jacobsthal(unsigned int n)
 {
     return (std::pow(2, n) - std::pow(-1, n)) / 3;
 }
+

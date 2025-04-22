@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:39:02 by hipham            #+#    #+#             */
-/*   Updated: 2025/04/21 22:04:29 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/22 17:20:06 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 	double			value;
 	bool			first = true;
 	std::regex 		first_line(R"(^date \| value$)");
-	std::regex		string(R"(^[?0-9]+\.[?0-9]+$)");
+	std::regex		string(R"(^-?[0-9]+\.?[0-9]+$)");
 	
 	while(std::getline(input, line))
 	{
+		if (line == "")
+			continue;
 		if (first)
 		{
 			if(std::regex_match(line, first_line) == false)
@@ -63,9 +65,9 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 			if (is_pipe != std::string::npos && std::count(line.begin(), line.end(), '|') == 1)
 			{
 				key = line.substr(0, is_pipe);
-				std::string l2 = line.substr(is_pipe + 2);
-				if (key == "" || l2 == "" || std::regex_match(l2, string) == false)
-					_input.emplace_back("Wrong format", 0);
+				val = line.substr(is_pipe + 2);
+				if (key == "" || val == "" || std::regex_match(val, string) == false)
+					_input.emplace_back(val, 0);
 				else
 				{
 					try
@@ -74,7 +76,7 @@ int BitcoinExchange::parse_input(std::ifstream &input)
 					}
 					catch(const std::exception& e)
 					{
-						_input.emplace_back(line.substr(is_pipe + 1), 0);
+						_input.emplace_back(val, 0);
 					}
 					_input.emplace_back(key, value);
 				}
@@ -156,7 +158,7 @@ int check_input(std::string date, double value)
 		return 1;
 	else if (value < 0)
 		return 2;
-	else if (value > 1000)
+	else if (value >= 1000)
 		return 3;
 	else
 		return 0;
@@ -176,7 +178,7 @@ void BitcoinExchange::print_output(BitcoinExchange& btc)
 				std::cout << n.first << "=> " << n.second << " = ";
 				std::cout << btc.calculate_btc(n.first, n.second) << std::endl;
 			}
-			break;	
+			break;
 		case 1:
 			std::cout << "Error: bad input => " << n.first << std::endl;
 			break;
@@ -184,7 +186,7 @@ void BitcoinExchange::print_output(BitcoinExchange& btc)
 			std::cout << "Error: not a positive number." << std::endl;
 			break;
 		case 3:
-			std::cout << "Error: too large a number." << std::endl;
+			std::cout << "Error: too large a number" << std::endl;
 			break;
 		default:
 			break;

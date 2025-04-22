@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:15:17 by hipham            #+#    #+#             */
-/*   Updated: 2025/04/21 16:36:05 by hipham           ###   ########.fr       */
+/*   Updated: 2025/04/22 14:37:43 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,6 @@ void PmergeVector::FordJohnsonSort()
     }
     PairAndSort(0);
     establishMainAndPend(_level);
-    if (!isSorted(_vector.begin(), _vector.end()))
-    {
-        std::cout << "Vector is not sorted after binary insert." << std::endl;
-        return;
-    }
 }
 
 void PmergeVector::PairAndSort(std::size_t level)
@@ -137,11 +132,6 @@ void PmergeVector::establishMainAndPend(std::size_t level)
     }
     if (it != _vector.end())
         std::copy(it, _vector.end(), std::back_inserter(rest));
-    // printvector(_vector, "vector before:     ");
-    // printvector(main, "Main before:     ");
-    // printvector(pend, "Pend before:     ");
-    // printvector(rest, "Rest before:     ");
-
     sort_chunks_in_main(main, range);
     binaryInsert(main, pend, level);
     std::copy(rest.begin(), rest.end(), std::back_inserter(main));

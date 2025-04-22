@@ -29,13 +29,6 @@ std::size_t PmergeDeque::getCounter() const
 
 void PmergeDeque::FordJohnsonSort()
 {
-    if(isSorted(_deque.begin(), _deque.end()) == true)
-        return;
-    if (_deque.size() <= 3)
-    {
-        std::sort(_deque.begin(), _deque.end());
-        return;
-    }
     PairAndSort(0);
     establishMainAndPend(_level);
     if (!isSorted(_deque.begin(), _deque.end()))
@@ -50,25 +43,6 @@ void PmergeDeque::FordJohnsonSort()
     (ending in value), using binary search among specific "boundary" defined by 
     2^(k+1)-1 elements taken from the main deque. And insert the block in binary search.
 */
-// std::deque<unsigned int>::iterator PmergeDeque::getInsertPos(
-//     std::deque<unsigned int> &main, std::size_t range, std::size_t num_blocks, unsigned int value)
-// {
-//     std::deque<unsigned int>::iterator pos;
-//     std::deque<unsigned int>::iterator it;
-//     std::deque<unsigned int> compareList;
-//     for (std::size_t i = 1; i <= num_blocks; i++)
-//     {
-//         if ((i * range) - 1 < main.size())
-//             compareList.push_back(main[(i * range) - 1]);
-//     }
-//     it = std::lower_bound(compareList.begin(), compareList.end(), value);
-//     unsigned int offset = std::distance(compareList.begin(), it) * range;
-//     if (offset <= main.size())
-//         pos = main.begin() + offset;
-//     else
-//         pos = main.end();
-//     return pos;
-// }
 
 std::deque<unsigned int>::iterator PmergeDeque::getInsertPos(
     std::deque<unsigned int> &main, std::size_t range, std::size_t num_blocks, unsigned int value)
@@ -130,22 +104,12 @@ void PmergeDeque::binaryInsert(
             std::size_t remain_elements = pend.size() / range;
             if (remain_elements < counter)
                 counter = remain_elements;
-            // std::cout << "jacob = " << Jacobsthal(_n);
-            // std::cout << "  |   range = " << range;
-            // std::cout << "  |   counter = " << counter;
-            // std::cout << "  |   bound index = " << num_blocks << std::endl;
-
             auto block_start = pend.begin() + (counter - 1) * range;
             auto block_end = block_start + range - 1;
-            // std::cout << "pending block = " << *block_start;
-            // std::cout << " " << *block_end << std::endl;
-    
             pos = getInsertPos(main, range, num_blocks, *block_end);
             main.insert(pos, block_start, block_end + 1);
             pend.erase(block_start, block_end + 1);
-            // printDeque(main, "Main after insert:     ");
-            // printDeque(pend, "Pend after insert:     ");
-            // printDeque(rest, "Rest after insert:     ");
+
             counter--;
         }    
         _n += 1;
@@ -220,11 +184,6 @@ void PmergeDeque::establishMainAndPend(std::size_t level)
     }
     if (it != _deque.end())
         std::copy(it, _deque.end(), std::back_inserter(rest));
-    // printDeque(_deque, "Deque before:     ");
-    // printDeque(main, "Main before:     ");
-    // printDeque(pend, "Pend before:     ");
-    // printDeque(rest, "Rest before:     ");
-
     sort_chunks_in_main(main, range);
     binaryInsert(main, pend, level);
     std::copy(rest.begin(), rest.end(), std::back_inserter(main));
@@ -253,8 +212,7 @@ void PmergeDeque::PairAndSort(std::size_t level)
     std::deque<unsigned int>::iterator it = _deque.begin(); 
     std::deque<unsigned int>::iterator tmp = it; 
     
-    // std::cout << "Level: " << level << std::endl;
-    if (level == 0)    
+    if (level == 0)
     {
         while ((i < size - 1))
         {
@@ -280,96 +238,10 @@ void PmergeDeque::PairAndSort(std::size_t level)
             tmp = tmp + range * 2;
         }
     }
-    if (std::pow(2, level + 1) <= size / 2)
+    level += 1;
+    if (std::pow(2, level) <= size / 2)
     {
-        level += 1;
         _level = level;
         PairAndSort(level);
     }
 }
-
-// void PmergeDeque::binaryInsert(
-//     std::deque<unsigned int> &main, std::deque<unsigned int> &pend,
-//     std::deque<unsigned int> &rest, std::size_t level)
-// {
-//     std::deque<unsigned int>::iterator mid;
-//     std::size_t range = std::pow(2, level);
-//     std::deque<unsigned int>::iterator pos;
-//     std::size_t bound_index;
-//     (void)rest;
-//     _n = 3;
-//     while (pend.size() != 0)
-//     {
-//         bound_index = std::pow(2, (_n - 1)) - 1;
-//         std::size_t counter = Jacobsthal(_n) - Jacobsthal(_n - 1);
-//         while (counter > 0 && pend.size() != 0)
-//         {
-//             std::size_t remain_elements = pend.size() / range;
-//             if (remain_elements < counter)
-//                 counter = remain_elements;
-//             std::cout << "jacob = " << Jacobsthal(_n);
-//             std::cout << "  |   range = " << range;
-//             std::cout << "  |   counter = " << counter;
-//             std::cout << "  |   bound index = " << bound_index << std::endl;
-//             std::size_t block_end_index = counter * range - 1;
-//             if (block_end_index >= pend.size())
-//                 break;
-//             auto block_start = pend.begin() + (counter - 1) * range;
-//             auto block_end = block_start + range - 1;
-//             std::cout << "pending block = " << *block_start;
-//             std::cout << " " << *block_end << std::endl;
-//             // Calculate middle insertion point in `main`
-//             std::size_t num_blocks = main.size() / range;
-//             std::size_t mid_index = (num_blocks % 2 == 0)
-//                 ? range * (num_blocks / 2) - 1
-//                 : range * ((num_blocks / 2) + 1) - 1;
-//             if (mid_index >= main.size())
-//                 break;
-//             auto mid = main.begin() + mid_index;
-//             if (range == 1)
-//                 pos = std::lower_bound(main.begin(), main.end(), *block_end);
-//             else
-//             {
-//                 if (*block_end > *mid)
-//                 {
-//                     while (*block_end > *mid)
-//                     {
-//                         if (mid + range >= main.end())
-//                             break;
-//                         mid += range;
-//                     }
-//                     if (*block_end > *mid)
-//                     {
-//                         pos = (mid == main.end() - 1) ? main.end() : mid + 1;
-//                     }
-//                     else
-//                     {
-//                         pos = mid - range + 1;
-//                     }
-//                 }
-//                 else
-//                 {
-//                     while (*block_end < *mid)
-//                     {
-//                         if (std::distance(main.begin(), mid) <= static_cast<long>(range))
-//                             break;
-//                         mid -= range;
-//                     }
-//                     if (*block_end < *mid && mid == main.begin())
-//                         pos = main.begin();
-//                     else if (*block_end < *mid && mid != main.begin())
-//                         pos = (*block_end < *main.begin()) ? main.begin() : mid - range + 1;
-//                     else
-//                         pos = mid + 1;
-//                 }
-//             }
-//             main.insert(pos, block_start, block_end + 1);
-//             pend.erase(block_start, block_end + 1);
-//             printDeque(pend, "Pend after insert:     ");
-//             printDeque(main, "Main after insert:     ");
-//             counter--;
-//         }    
-//         _n += 1;
-//     }
-//     std::cout << std::endl;
-// } 

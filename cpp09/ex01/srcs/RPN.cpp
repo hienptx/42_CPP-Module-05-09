@@ -60,7 +60,7 @@ void RPN::calculate(char op)
 			break;
 		default:
 			throw std::invalid_argument("Error: Invalid operator.");
-    }
+	}
 }
 
 void RPN::parse_input(RPN &rpn)
@@ -71,6 +71,8 @@ void RPN::parse_input(RPN &rpn)
 	
 	while (iss >> token)
 	{
+		if (token.size() > 1)
+			throw std::runtime_error("Error: Invalid RPN expression.");	
 		if (operators.find(token) != std::string::npos)
 		{
 			if (_stack.size() < 2)
@@ -87,6 +89,6 @@ void RPN::parse_input(RPN &rpn)
 		}
 	}
 	if (_stack.size() != 1)
-        throw std::runtime_error("Error: Invalid RPN expression.");
+		throw std::runtime_error("Error: Invalid RPN expression.");
 	std::cout << _stack.top() << std::endl;
 }
