@@ -24,7 +24,7 @@ class PmergeDeque : public PmergeMe
         void binaryInsert(  std::deque<unsigned int> &main,
                             std::deque<unsigned int> &pend,
                             std::size_t level);
-        void sort_chunks_in_main(std::deque<unsigned int> &seq,
+        void check_main(std::deque<unsigned int> &seq,
                             std::size_t range);
         std::deque<unsigned int>::iterator getInsertPos(std::deque<unsigned int> &main,
                             std::size_t range, std::size_t num_blocks,

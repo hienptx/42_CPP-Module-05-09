@@ -24,7 +24,7 @@ class PmergeVector : public PmergeMe
         void binaryInsert(  std::vector<unsigned int> &main,
                             std::vector<unsigned int> &pend,
                             std::size_t level);
-        void sort_chunks_in_main(std::vector<unsigned int> &seq,
+        void check_main(std::vector<unsigned int> &seq,
                             std::size_t range);
         std::vector<unsigned int>::iterator getInsertPos(std::vector<unsigned int> &main,
                             std::size_t range, std::size_t num_blocks,

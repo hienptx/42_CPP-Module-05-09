@@ -49,21 +49,21 @@ std::deque<unsigned int>::iterator PmergeDeque::getInsertPos(
 {
     std::deque<unsigned int>::iterator pos;
     std::deque<unsigned int>::iterator it;
-    std::deque<unsigned int> compareList;
+    std::deque<unsigned int> compareDeque;
 
     for (std::size_t i = 1; i <= num_blocks; i++)
     {
         if ((i * range) - 1 < main.size())
-            compareList.push_back(main[(i * range) - 1]);
+            compareDeque.push_back(main[(i * range) - 1]);
     }
-    it = compareList.begin();
+    it = compareDeque.begin();
     std::size_t left = 0;
-    std::size_t right = compareList.size();
+    std::size_t right = compareDeque.size();
     while (left < right)
     {
         _counter++;
         std::size_t mid = left + (right - left) / 2;
-        if (compareList[mid] < value)
+        if (compareDeque[mid] < value)
             left = mid + 1;
         else
             right = mid;
@@ -109,18 +109,16 @@ void PmergeDeque::binaryInsert(
             pos = getInsertPos(main, range, num_blocks, *block_end);
             main.insert(pos, block_start, block_end + 1);
             pend.erase(block_start, block_end + 1);
-
             counter--;
         }    
         _n += 1;
     }
 } 
 
-void PmergeDeque::sort_chunks_in_main(std::deque<unsigned int>& seq, std::size_t range) 
+void PmergeDeque::check_main(std::deque<unsigned int>& seq, std::size_t range) 
 {
     if (range == 0 || seq.empty()) return;
-    std::deque<std::deque<unsigned int>> chunks;
-
+        std::deque<std::deque<unsigned int>> chunks;
     for (size_t i = seq.size(); i > 0; i -= range) 
     {
         size_t chunk_start = (i >= range) ? i - range : 0;
@@ -184,7 +182,7 @@ void PmergeDeque::establishMainAndPend(std::size_t level)
     }
     if (it != _deque.end())
         std::copy(it, _deque.end(), std::back_inserter(rest));
-    sort_chunks_in_main(main, range);
+    check_main(main, range);
     binaryInsert(main, pend, level);
     std::copy(rest.begin(), rest.end(), std::back_inserter(main));
     _deque.clear();
@@ -239,9 +237,7 @@ void PmergeDeque::PairAndSort(std::size_t level)
         }
     }
     level += 1;
+    _level = level;
     if (std::pow(2, level) <= size / 2)
-    {
-        _level = level;
         PairAndSort(level);
-    }
 }

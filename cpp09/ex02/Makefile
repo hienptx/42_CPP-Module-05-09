@@ -8,7 +8,7 @@ OBJS_PATH = ./obj
 
 SRCS =	main.cpp \
 		PmergeMe.cpp \
-		PmergeList.cpp \
+		PmergeVector.cpp \
 		PmergeDeque.cpp 
 
 OBJS = $(addprefix $(OBJS_PATH)/, $(SRCS:.cpp=.o))

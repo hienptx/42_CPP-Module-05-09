@@ -45,15 +45,13 @@ std::size_t PmergeVector::getCounter() const
 // Override of pure functions
 void PmergeVector::FordJohnsonSort()
 {
-    if(isSorted(_vector.begin(), _vector.end()) == true)
-        return;
-    if (_vector.size() <= 3)
-    {
-        std::sort(_vector.begin(), _vector.end());
-        return;
-    }
     PairAndSort(0);
     establishMainAndPend(_level);
+    if (!isSorted(_vector.begin(), _vector.end()))
+    {
+        std::cout << "Sequence is not sorted after binary insert." << std::endl;
+        return;
+    }
 }
 
 void PmergeVector::PairAndSort(std::size_t level)
@@ -91,12 +89,10 @@ void PmergeVector::PairAndSort(std::size_t level)
             tmp = tmp + range * 2;
         }
     }
+    level += 1;
+    _level = level;
     if (std::pow(2, level + 1) <= size / 2)
-    {
-        level += 1;
-        _level = level;
         PairAndSort(level);
-    }
 }
 
 
@@ -132,7 +128,7 @@ void PmergeVector::establishMainAndPend(std::size_t level)
     }
     if (it != _vector.end())
         std::copy(it, _vector.end(), std::back_inserter(rest));
-    sort_chunks_in_main(main, range);
+    check_main(main, range);
     binaryInsert(main, pend, level);
     std::copy(rest.begin(), rest.end(), std::back_inserter(main));
     _vector.clear();
@@ -185,7 +181,7 @@ void PmergeVector::binaryInsert(  std::vector<unsigned int> &main,
     }
 }
 
-void PmergeVector::sort_chunks_in_main(std::vector<unsigned int>& seq,
+void PmergeVector::check_main(std::vector<unsigned int>& seq,
     std::size_t range)
 {
     if (range == 0 || seq.empty()) return;
